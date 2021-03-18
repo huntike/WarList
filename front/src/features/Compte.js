@@ -8,9 +8,8 @@ export const LandingPage= () => {
 
     
     return(
-        <Box >
-             <Button margin="small" label="ok" 
-              />
+        <Box>
+
         </Box>
     )
 

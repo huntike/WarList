@@ -18,7 +18,7 @@ const Login = () => {
         }
 
     return(
-        <Box fill align="center" justify="center" background="back" gap="medium">
+        <Box fill align="center" justify="center" background="#4E4E4E " gap="medium">
             Login
             <Box width="small" gap="small">
                 <TextInput type="email" placeholder="email" onChange={(e) => setEmail(e.target.value)} />
