@@ -34,7 +34,10 @@ export const AppBars = () => {
       
         <Box >
             <AppBar  background= "#4E4E4E">
-                <Link to="/"><Button  label="Home"/></Link>                
+                <Link to="/"><Button  label="Home"/></Link>  
+                <Box   justify="center" direction="row" gap="medium"> 
+                                Liste Warhammer 40K
+                          </Box>               
                 <Header >
                   <ResponsiveContext.Consumer>
                     {size =>
@@ -47,17 +50,25 @@ export const AppBars = () => {
                             icon={<MenuIcon color="#ffffff"/>}
                             items={[
                               {
+                                label:  <Link to="/Compte"><Button  label="Compte"/></Link>,
+                              },
+                              {
+                                
                                 label: <Button  label="sign out" onClick={()=> fire.auth().signOut()} />,
                               },
+                            
                             ]}
                           />
                         </Box>
                       ) : (
-                        <Box justify="end" direction="row" gap="medium">
-                                
-                                <Link to="/Compte"><Button  label="Compte"/></Link>
-                                <Button label="sign out" onClick={()=> fire.auth().signOut()} />
-                        </Box>
+                        
+                         
+                          <Box justify="end" direction="row" gap="medium">
+                                  
+                                  <Link to="/Compte"><Button  label="Compte"/></Link>
+                                  <Button label="sign out" onClick={()=> fire.auth().signOut()} />
+                          </Box>
+                        
                       )
                     }
                   </ResponsiveContext.Consumer>              

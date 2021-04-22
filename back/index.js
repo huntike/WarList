@@ -4,15 +4,14 @@ const cors = require('cors');
 const decodeIDToken = require('./authenticateToken');
 const listsRouter = require('./controllers/lists');
 const likesRouter = require('./controllers/likes');
-const socketio = require("socket.io");
-require('dotenv').config();
+const commentRouter = require('./controllers/comment');
 
+const socketio = require("socket.io");
 const app = express();
+var server = require("http").Server(app);
 app.use(cors());
 app.use(decodeIDToken);
 app.use(express.json());
-var server = require("http").Server(app);
-
 
 // socket.io
 io = socketio(server, {
@@ -21,26 +20,28 @@ io = socketio(server, {
     }
 });
 
-// now all request have access to io
 app.use(function (req, res, next) {
     req.io = io;
     next();
 });
 
+
 mongoose.connect(
-    process.env.MONGO_URL,
+    'mongodb+srv://test:test@cluster0.4ie6i.mongodb.net/testdbname?retryWrites=true&w=majority',
     {
-        useNewUrlParser: true, useUnifiedTopology: true
+        useNewUrlParser: true, useUnifiedTopology: true 
     }
 ).then(() => {
     console.log('Connected to database');
 }).catch((err) => console.log('Error connecting database', err.message));
 
-app.use('/lists', listsRouter);
+
+app.use('/lists', listsRouter)
 app.use('/likes', likesRouter);
+app.use('/comment',commentRouter);
 
 app.get('/', (req, res) => {
-    res.send('server on');
+    res.send('Hello ynov toulouse');
 });
 
 const PORT = 3001;

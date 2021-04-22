@@ -1,13 +1,11 @@
 const mongoose = require('mongoose');
 
-const listSchema = new mongoose.Schema({
-    content: Array,
-    author: String,
-    comment: Array,
-    
+const likeSchema = new mongoose.Schema({
+    user: String,
+    likes: Array
 })
 
-listSchema.set('toJSON', {
+likeSchema.set('toJSON', {
     transform : (doc, returnedObject) => {
         returnedObject.id = returnedObject._id.toString();
         delete returnedObject._id;
@@ -15,4 +13,4 @@ listSchema.set('toJSON', {
     }
 })
 
-module.exports = mongoose.model('List', listSchema);
+module.exports = mongoose.model('Like', likeSchema);

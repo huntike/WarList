@@ -11,17 +11,19 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        
         fire.auth().signInWithEmailAndPassword(email, password)
           .catch((error) => {
            setalert('Incorrect username or password');
           });
         }
+        
 
     return(
-        <Box fill align="center" justify="center" background="#4E4E4E " gap="medium">
-            Login
+        <Box fill align="center" justify="center" background="#4E4E4E " gap="medium" color="white">
+            <Text color="white" >Login</Text>
             <Box width="small" gap="small">
-                <TextInput type="email" placeholder="email" onChange={(e) => setEmail(e.target.value)} />
+                <TextInput type="email" placeholder="email"  onChange={(e) => setEmail(e.target.value)} />
                 <TextInput type="password" placeholder="password" onChange={(e) => setPassword(e.target.value)} />
             </Box>
             

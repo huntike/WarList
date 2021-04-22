@@ -1,13 +1,13 @@
-import React from "react";
-import { Grommet,Button, Box,  } from "grommet";
+import React, { useEffect } from "react";
+import { Grommet, Box,  } from "grommet";
 import Login from "./features/login/login";
 import AppBars from "./features/AppBar";
 import { css } from 'styled-components';
 
 
 import fire from "./fire";
-
-
+import connect from "./socket-api";
+import store from './app/store';
 
 
 import {MainRoute} from './features/route/mainRoute';
@@ -62,13 +62,22 @@ const theme = {
 };
 
 function App() {
+
+  useEffect(() => {
+    connect("localhost:3001", store);
+  }, []);
+
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   
   fire.auth().onAuthStateChanged((user) => {
     return user ? setIsLoggedIn(true) : setIsLoggedIn(false);
+
+    
 });
+
+
   return (
-    <Grommet theme={theme} full>
+    <Grommet theme={theme} full  background= "#BEBEBE">
               {!isLoggedIn
           ? (   
               
@@ -76,18 +85,19 @@ function App() {
             
           ) 
           : (
-        <Box>
+        <Box  >
           <AppBars />
-            <Box fill align="center" justify="center" background= "#4E4E4E">
-             
+              <Box fill align="center" justify="center" background= "#4E4E4E">
               
-            </Box>
+                
+              </Box>
+              <Box fill align="center" justify="center" background= "#BEBEBE">
+                <MainRoute/> 
+              </Box>
             </Box>
 
           )}
-      <Box fill align="center" justify="center" background= "#D9D8D8">
-        <MainRoute/> 
-      </Box>
+
   
     </Grommet>
   );

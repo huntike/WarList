@@ -1,26 +1,36 @@
 const listsRouter = require('express').Router();
-const list = require('../models/list');
+const List = require('../models/list');
+const Comment = require('../models/comment')
 
 listsRouter.get('/', async (req, res) => {
 
     const auth = req.currentUser;
     if (auth) {
-        const lists = await list.find({});
+        
+        const lists = await List.find({});
+        for(const list of lists) {
+            list.comment = []
+            const comments = await Comment.find({idList:list.id});
+            
+            list.comment = comments;
+        };
+        
+
         return res.json(lists.map((list => list.toJSON())));
     }
 
     return res.status(403).send('Not authorized');
 });
 
-listsRouter.list('/', async (req, res) => {
+listsRouter.post('/', async (req, res) => {
     const auth = req.currentUser;
 
     if (auth) {
-        const list = new list({ content: req.body.content, author: req.body.author });
-        const savedlist = await list.save();
-        const lists = await list.find({});
+        const list = new List({ content: req.body.content, author: req.body.author });
+        const savedList = await list.save();
+        const lists = await List.find({});
         req.io.emit('UPDATE', lists);
-        return res.status(201).json(savedlist);
+        return res.status(201).json(savedList);
     }
 
     return res.status(403).send('Not authorized')
