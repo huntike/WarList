@@ -28,11 +28,9 @@ const Lists = () => {
     const [inputField, setinputField] = React.useState([
         {uniti: ''},
     ]);
-    const handleAddFields = () =>{
-        setinputField([...inputField,{uniti: ''}])
-    }
-    const [refresh, setrefresh] = React.useState(true);
 
+    const [refresh, setrefresh] = React.useState(true);
+//add list 
     const publish = (e) => {
         e.preventDefault();
         if (content) {
@@ -41,6 +39,8 @@ const Lists = () => {
             addList(content).then(() => setrefresh(true))
         }
     }
+
+    //add comment
     const publishComment = (e,idList) => {
         e.preventDefault();
         
@@ -49,7 +49,7 @@ const Lists = () => {
             
         }
     }
-
+//update like and list
     React.useEffect(() => {
         const fecthLists = async () => {
             const fetchData = await getLists();
@@ -67,40 +67,70 @@ const Lists = () => {
         }
     }, [refresh])
 
-    const suggestions = Array(100)
-        .fill()
-        .map((_, i) => `suggestion ${i + 1}`);
 
 
-    const [value, setValue] = React.useState('');
 
-    const onChange = event => setValue(event.target.value);
-
-    const onSelect = event => setValue(event.suggestion);
     
 
+  
+    
+    const [inputList, setInputList] = React.useState([{ firstName: "" }]);
+ 
+    // handle input change
+    const handleInputChange = (e, index) => {
+      const { name, value } = e.target;
+      const list = [...inputList];
+      list[index][name] = value;
+      setInputList(list);
+    };
+   
+    // handle click event of the Remove button
+    const handleRemoveClick = index => {
+      const list = [...inputList];
+      list.splice(index, 1);
+      setInputList(list);
+    };
+   
+    // handle click event of the Add button
+    const handleAddClick = () => {
+      setInputList([...inputList, { firstName: ""}]);
+    };
   
     return (
         <Box align="center">
             <Box  gap="medium"margin="medium">
-            <FormField onChange={(e) => setcontent(e.target.value)} >
+            {/* <Box direction="row" gap="small">
+                <TextInput placeholder="content" onChange={(e) => setcontent(e.target.value)} />
+                <Button label="publier" onClick={(e) => publish(e)} />
+            </Box> */}
+            <FormField  >
                 
                 
-                {inputField.map((inputField, index) =>(
-                    <Box key={index}>
-                       <TextInput
-                            value={value}
-                            onChange={onChange}
-                            onSelect={onSelect}
-                            suggestions={suggestions}
-                            defaultSuggestion={1}
+                
+               {inputList.map((x, i) => {
+                return (
+                    <Box className="box">
+                        <TextInput
+                            name="unite"
+                            placeholder="type here"
+                           
+                            onChange={(e) => setcontent(e.target.value)}
                         />
-                        <Button onClick={() => handleAddFields()}> + </Button>
+                    
+                        <Box margin="small" >
+                            {inputList.length !== 1 && <Button onClick={() => handleRemoveClick(i)}>Remove</Button>}
+                        </Box>
+                        <Box margin="small">
+
+                            {inputList.length - 1 === i && <Button onClick={handleAddClick}>Add</Button>}
+                        </Box>
                     </Box>
-                ))}
+                );
+                })}
+                 <Button label="publier" onClick={(e) => publish(e)} />
             </FormField>
                 
-                <Button label="publier" onClick={(e) => publish(e)} />
+                
             </Box>
             <Button icon={<Refresh />} onClick={() => setrefresh(true)} />
            
