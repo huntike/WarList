@@ -25,17 +25,17 @@ const Lists = () => {
     const dispatch = useDispatch();
     const [content, setcontent] = React.useState();
     const [comment, setcomment] = React.useState();
-    const [inputField, setinputField] = React.useState([
-        {uniti: ''},
+    const [inputFields, setinputFields] = React.useState([
+        {unite: ''},
     ]);
 
     const [refresh, setrefresh] = React.useState(true);
-//add list 
+//add list old 
     const publish = (e) => {
         e.preventDefault();
         if (content) {
 
-
+            console.log(content);
             addList(content).then(() => setrefresh(true))
         }
     }
@@ -68,66 +68,65 @@ const Lists = () => {
     }, [refresh])
 
 
-
-
-    
-
   
     
-    const [inputList, setInputList] = React.useState([{ firstName: "" }]);
- 
-    // handle input change
-    const handleInputChange = (e, index) => {
-      const { name, value } = e.target;
-      const list = [...inputList];
-      list[index][name] = value;
-      setInputList(list);
-    };
+    
+    const handleChangeInput = (index, event) =>{
+        const values = [...inputFields];
+        values[index][event.target.name] = event.target.value;
+        setinputFields(values);
+    }
+
+    const hanleAddFields = ( ) => {
+        setinputFields([...inputFields, { unite:""}])
+    }
+    const handleRemoveFields = (index) => {
+        const values  = [...inputFields];
+        values.splice(index, 1);
+        setinputFields(values);
+    }
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        
+        if (inputFields) {
+
+            console.log(inputFields);
+            addList(inputFields).then(() => setrefresh(true))
+        }
+    }
+
+    
    
-    // handle click event of the Remove button
-    const handleRemoveClick = index => {
-      const list = [...inputList];
-      list.splice(index, 1);
-      setInputList(list);
-    };
-   
-    // handle click event of the Add button
-    const handleAddClick = () => {
-      setInputList([...inputList, { firstName: ""}]);
-    };
+
   
     return (
         <Box align="center">
             <Box  gap="medium"margin="medium">
-            {/* <Box direction="row" gap="small">
+            {/*
+            Ancien add list
+            <Box direction="row" gap="small">
                 <TextInput placeholder="content" onChange={(e) => setcontent(e.target.value)} />
                 <Button label="publier" onClick={(e) => publish(e)} />
             </Box> */}
             <FormField  >
-                
-                
-                
-               {inputList.map((x, i) => {
-                return (
-                    <Box className="box">
-                        <TextInput
+                    {inputFields.map((inputField, index) => (
+                        <Box key={index}>
+                            <TextInput
                             name="unite"
                             placeholder="type here"
-                           
-                            onChange={(e) => setcontent(e.target.value)}
-                        />
-                    
-                        <Box margin="small" >
-                            {inputList.length !== 1 && <Button onClick={() => handleRemoveClick(i)}>Remove</Button>}
-                        </Box>
-                        <Box margin="small">
+                            value={inputField.unite}
+                            onChange={(event) => handleChangeInput(index, event)}
+                            
+                            />
+                            <Button onClick={() => hanleAddFields() }>Add</Button>
+                            <Button onClick={() => handleRemoveFields(index)}>  Delete</Button>
 
-                            {inputList.length - 1 === i && <Button onClick={handleAddClick}>Add</Button>}
                         </Box>
-                    </Box>
-                );
-                })}
-                 <Button label="publier" onClick={(e) => publish(e)} />
+                    ))}
+                
+                
+               
+                 <Button label="publier" onClick={(e) => handleSubmit(e)} />
             </FormField>
                 
                 
@@ -144,7 +143,17 @@ const Lists = () => {
                             width={ size==="small" ?"medium":"large"}>
                             
                             <Text margin="medium">Poster par  {list.author}</Text>
-                            <Text margin="medium">{list.content}</Text>
+                            {list.content.map(content => (
+                                <Text key={content.id} margin="medium">{content.value}</Text>
+                            )
+                            )}
+                                
+
+
+                            {/*
+                            Ancien affichage List 
+                             <Text margin="medium">{list.content}</Text>
+                              */}
                             <Box justify="end">
                                 {likes.find(x => x === list.id) ?
                                     <Like list={list.id} isLiked={true}></Like>

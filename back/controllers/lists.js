@@ -13,6 +13,7 @@ listsRouter.get('/', async (req, res) => {
             const comments = await Comment.find({idList:list.id});
             
             list.comment = comments;
+            console.log(list.content);
         };
         
 

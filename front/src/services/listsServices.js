@@ -39,10 +39,11 @@ export const addList = async (content) => {
 
 export const getLists = async () => {
     const header = await createToken();
-
+    
     try {
         const res = await axios.get(url, header)
         return res.data;
+        
     } catch (e) {
         console.error(e);
     }
